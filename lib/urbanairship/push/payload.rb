@@ -5,21 +5,29 @@ module Urbanairship
 
       include Urbanairship::Common
 
+      # Global attributes for the push
+      # Seems redundant but it allows global attributes to
+      # be added with the same pattern
+      def global_attributes(poro)
+        poro
+      end
+
       # Notification Object for a Push Payload
       def notification(alert: nil, ios: nil, android: nil, amazon: nil,
                        web: nil, wns: nil, open_platforms: nil,
-                       actions: nil, interactive: nil, sms: nil, email: nil)
+                       actions: nil, interactive: nil, sms: nil, email: nil, global_attributes: nil)
         payload = compact_helper({
+          actions: actions,
           alert: alert,
-          ios: ios,
-          android: android,
           amazon: amazon,
+          android: android,
+          email: email,
+          global_attributes: global_attributes,
+          interactive: interactive,
+          ios: ios,
+          sms: sms,
           web: web,
           wns: wns,
-          actions: actions,
-          interactive: interactive,
-          sms: sms,
-          email: email
         })
         if open_platforms
           open_platforms.each {|platform, overrides|
@@ -154,6 +162,15 @@ module Urbanairship
           icons: icons,
           options: options
         })
+      end
+
+      # Message from template
+      def message_from_template(template_id: required('template_id'))
+        {
+          template: {
+            template_id: template_id
+          }
+        }
       end
 
       # In-app message specific portion of Push Notification Object

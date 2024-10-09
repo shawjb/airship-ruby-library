@@ -10,14 +10,15 @@ module Urbanairship
     class Push
       attr_writer :client
 
-      attr_accessor :device_types,
-                    :audience,
+      attr_accessor :audience,
+                    :campaigns,
+                    :global_attributes,
+                    :in_app,
+                    :localizations,
+                    :message,
                     :notification,
                     :options,
-                    :message,
-                    :in_app,
-                    :campaigns,
-                    :localizations
+                    :device_types
 
       include Urbanairship::Common
       include Urbanairship::Loggable
@@ -32,13 +33,14 @@ module Urbanairship
       def payload
         compact_helper({
           audience: audience,
+          campaigns: campaigns,
+          device_types: device_types,
+          global_attributes: global_attributes,
+          in_app: in_app,
+          localizations: localizations,
+          message: message,
           notification: notification,
           options: options,
-          device_types: device_types,
-          message: message,
-          in_app: in_app,
-          campaigns: campaigns,
-          localizations: localizations
         })
       end
 
